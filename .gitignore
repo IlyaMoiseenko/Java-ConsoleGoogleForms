@@ -15,6 +15,7 @@ replay_pid*
 ##############################
 out/
 .idea/*.xml
+.idea/libraries/
 .idea_modules/
 *.iml
 *.ipr
