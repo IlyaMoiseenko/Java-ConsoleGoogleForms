@@ -1,20 +1,19 @@
 package models;
 
-import java.util.ArrayList;
-import java.util.List;
+import enums.Role;
+
 import java.util.UUID;
 
 public class User {
     private UUID id;
     private String username;
     private String password;
-    private List<Form> forms;
+    private Role role;
 
     public User(String username, String password) {
         this.id = UUID.randomUUID();
         this.username = username;
         this.password = password;
-        this.forms = new ArrayList<>();
     }
 
     public UUID getId() {
@@ -41,11 +40,11 @@ public class User {
         this.password = password;
     }
 
-    public List<Form> getForms() {
-        return forms;
+    public Role getRole() {
+        return role;
     }
 
-    public void setForms(List<Form> forms) {
-        this.forms = forms;
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
