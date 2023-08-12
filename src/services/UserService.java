@@ -9,7 +9,7 @@ import java.util.UUID;
 public class UserService {
     private final UserStorage storage = new JsonFileUserStorage();
 
-    public boolean create(String username, String password) {
+    public User create(String username, String password) {
         User user = new User(username, password);
 
         return storage.add(user);
@@ -21,5 +21,15 @@ public class UserService {
 
     public User getByUsername(String username) {
         return storage.getByUsername(username);
+    }
+
+    public User logIn(String username, String password) {
+        User user = getByUsername(username);
+
+        if (user != null)
+            if (user.getPassword().equals(password))
+                return user;
+
+        return null;
     }
 }

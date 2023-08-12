@@ -29,7 +29,7 @@ public class JsonFileUserStorage implements UserStorage {
     }
 
     @Override
-    public boolean add(User user) {
+    public User add(User user) {
         if (allUsers == null)
             allUsers = new ArrayList<>();
 
@@ -38,12 +38,12 @@ public class JsonFileUserStorage implements UserStorage {
         try (FileWriter fileWriter = new FileWriter(path, false)) {
             fileWriter.write(gson.toJson(allUsers));
 
-            return true;
+            return user;
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return false;
+        return null;
     }
 
     @Override
