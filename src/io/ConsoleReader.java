@@ -11,4 +11,9 @@ public class ConsoleReader implements Reader {
     public String readLine() {
         return scanner.next();
     }
+
+    @Override
+    public int readNum() {
+        return scanner.nextInt();
+    }
 }
