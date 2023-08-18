@@ -2,7 +2,7 @@ package services;
 
 import interfaces.FormStorage;
 import models.Form;
-import storages.JsonFileFormStorage;
+import storages.json.JsonFileFormStorage;
 
 import java.util.List;
 import java.util.UUID;

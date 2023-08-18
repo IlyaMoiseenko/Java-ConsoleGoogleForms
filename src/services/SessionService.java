@@ -3,7 +3,7 @@ package services;
 import enums.SessionState;
 import interfaces.SessionStorage;
 import models.User;
-import storages.JsonFileSessionStorage;
+import storages.json.JsonFileSessionStorage;
 
 public class SessionService {
     private SessionStorage sessionStorage = new JsonFileSessionStorage();

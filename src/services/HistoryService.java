@@ -3,7 +3,7 @@ package services;
 import interfaces.HistoryStorage;
 import models.History;
 import models.User;
-import storages.JsonFilleHistoryStorage;
+import storages.json.JsonFilleHistoryStorage;
 
 import java.util.List;
 

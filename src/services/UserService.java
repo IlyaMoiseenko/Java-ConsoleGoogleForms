@@ -3,7 +3,7 @@ package services;
 import enums.Role;
 import interfaces.UserStorage;
 import models.User;
-import storages.JsonFileUserStorage;
+import storages.json.JsonFileUserStorage;
 
 import java.util.UUID;
 
