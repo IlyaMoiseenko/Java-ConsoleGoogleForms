@@ -1,17 +1,18 @@
 package application.console;
 
 import enums.SessionState;
+import interfaces.QuestionStorage;
 import interfaces.Reader;
+import interfaces.UserAnswerStorage;
 import interfaces.Writer;
 import io.ConsoleReader;
 import io.ConsoleWriter;
-import models.Answer;
-import models.Form;
-import models.History;
-import models.Question;
+import models.*;
 import services.FormService;
 import services.HistoryService;
 import services.SessionService;
+import storages.jdbc.JdbcQuestionStorage;
+import storages.jdbc.JdbcUserAnswerStorage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,9 @@ public class UserActions {
     private Reader reader = new ConsoleReader();
 
     private final FormService formService = new FormService();
-    private final HistoryService historyService = new HistoryService();
+    //private final HistoryService historyService = new HistoryService();
+    private final UserAnswerStorage userAnswerStorage = new JdbcUserAnswerStorage();
+    private final QuestionStorage questionStorage = new JdbcQuestionStorage();
     private final SessionService sessionService;
 
     public UserActions(SessionService sessionService) {
@@ -50,15 +53,15 @@ public class UserActions {
             String id = reader.readLine();
 
             Form form = formService.getGyId(UUID.fromString(id));
-            List<String> answers = getAnswerOnFormQuestions(form);
+            List<UserAnswer> answers = getAnswerOnFormQuestions(form);
 
-            History currentUserHistory = new History(
-                    sessionService.getCurrentSessionUser().getId(),
-                    form.getId(),
-                    answers
-            );
+            userAnswerStorage.add(answers);
 
-            historyService.save(currentUserHistory);
+//            History currentUserHistory = new History();
+//            currentUserHistory.setUserId(sessionService.getCurrentSessionUser().getId());
+//            currentUserHistory.setFormId(form.getId());
+
+            //historyService.save(currentUserHistory);
         } else if (choose == 2) {
             getHistoryByUser();
 
@@ -70,8 +73,8 @@ public class UserActions {
         }
     }
 
-    private List<String> getAnswerOnFormQuestions(Form form) {
-        List<String> answers = new ArrayList<>();
+    private List<UserAnswer> getAnswerOnFormQuestions(Form form) {
+        List<UserAnswer> userAnswers = new ArrayList<>();
 
         writer.write("Title: " + form.getTitle());
         writer.write("Description: "  + form.getDescription());
@@ -87,33 +90,52 @@ public class UserActions {
                     writer.write(j + ". " + currentQuestion.getAnswers().get(j).getTitle());
 
                 int userAnswer = reader.readNum();
-                answers.add(currentQuestion.getAnswers().get(userAnswer).getTitle());
+
+                userAnswers.add(
+                        new UserAnswer(
+                                String.valueOf(userAnswer),
+                                currentQuestion.getId(),
+                                sessionService.getCurrentSessionUser().getId()
+                        )
+                );
             } else {
                 String userAnswer = reader.readLine();
-                answers.add(userAnswer);
+                userAnswers.add(
+                        new UserAnswer(
+                                userAnswer,
+                                currentQuestion.getId(),
+                                sessionService.getCurrentSessionUser().getId()
+                        )
+                );
             }
         }
 
-        return answers;
+        return userAnswers;
     }
 
     private void getHistoryByUser() {
-        List<History> historiesByUser = historyService.findByUser(sessionService.getCurrentSessionUser());
+//        List<History> historiesByUser = historyService.findByUser(sessionService.getCurrentSessionUser());
+//
+//        for (History history : historiesByUser)
+//            printHistory(history);
 
-        for (History history : historiesByUser)
-            printHistory(history);
+        List<UserAnswer> userAnswers = userAnswerStorage.getByUserId(sessionService.getCurrentSessionUser().getId());
 
-    }
-
-    private void printHistory(History history) {
-        Form form = formService.getGyId(history.getFormId());
-        writer.write("Title: " + form.getTitle());
-
-        for (int j = 0; j < form.getQuestions().size(); j++) {
-            String questionTitle = form.getQuestions().get(j).getTitle();
-
-            writer.write(j + ". " + questionTitle + " - " + history.getUserAnswers().get(j));
-            writer.write("------");
+        for (UserAnswer userAnswer : userAnswers) {
+            Question question = questionStorage.get(userAnswer.getQuestionId());
+            writer.write(question.getTitle() + " - " + userAnswer.getAnswer());
         }
     }
+
+//    private void printHistory(History history) {
+//        Form form = formService.getGyId(history.getFormId());
+//        writer.write("Title: " + form.getTitle());
+//
+//        for (int j = 0; j < form.getQuestions().size(); j++) {
+//            String questionTitle = form.getQuestions().get(j).getTitle();
+//
+//            writer.write(j + ". " + questionTitle + " - " + history.getUserAnswers().get(j));
+//            writer.write("------");
+//        }
+//    }
 }

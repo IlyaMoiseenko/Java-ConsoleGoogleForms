@@ -3,12 +3,14 @@ package services;
 import enums.Role;
 import interfaces.UserStorage;
 import models.User;
+import storages.jdbc.JdbcUserStorage;
 import storages.json.JsonFileUserStorage;
 
 import java.util.UUID;
 
 public class UserService {
-    private final UserStorage storage = new JsonFileUserStorage();
+    //private final UserStorage storage = new JsonFileUserStorage();
+    private final UserStorage storage = new JdbcUserStorage();
 
     public User create(String username, String password) {
         User user = new User(username, password);

@@ -9,6 +9,16 @@ public class History {
     private UUID formId;
     private List<String> userAnswers;
 
+    public History() {
+        this.id = UUID.randomUUID();
+    }
+
+    public History(UUID id, UUID userId, UUID formId) {
+        this.id = id;
+        this.userId = userId;
+        this.formId = formId;
+    }
+
     public History(UUID userId, UUID formId, List<String> userAnswers) {
         this.userId = userId;
         this.formId = formId;
