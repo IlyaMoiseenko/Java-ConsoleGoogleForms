@@ -12,8 +12,8 @@ public class Answer {
         this.title = title;
     }
 
-    public Answer(String title, UUID questionId) {
-        this.id = UUID.randomUUID();
+    public Answer(UUID id, String title, UUID questionId) {
+        this.id = id;
         this.title = title;
         this.questionId = questionId;
     }

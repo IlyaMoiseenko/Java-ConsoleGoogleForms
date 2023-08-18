@@ -22,6 +22,12 @@ public class Question {
         this.answers = answers;
     }
 
+    public Question(UUID id, String title, UUID formId) {
+        this.id = id;
+        this.title = title;
+        this.formId = formId;
+    }
+
     public UUID getId() {
         return id;
     }

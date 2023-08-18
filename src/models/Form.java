@@ -9,6 +9,12 @@ public class Form {
     private String description;
     private List<Question> questions;
 
+    public Form(UUID id, String title, String description) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+    }
+
     public Form(String title, String description, List<Question> questions) {
         this.id = UUID.randomUUID();
         this.title = title;
