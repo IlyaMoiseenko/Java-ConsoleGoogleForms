@@ -5,6 +5,7 @@ import interfaces.Reader;
 import interfaces.Writer;
 import io.ConsoleReader;
 import io.ConsoleWriter;
+import models.Answer;
 import models.Form;
 import models.History;
 import models.Question;
@@ -80,11 +81,17 @@ public class UserActions {
 
             writer.write(i + ". " + currentQuestion.getTitle());
 
-            for (int j = 0; j < currentQuestion.getAnswers().size(); j++)
-                writer.write(j + ". " + currentQuestion.getAnswers().get(j).getTitle());
+            List<Answer> currentQuestionAnswers = currentQuestion.getAnswers();
+            if (currentQuestionAnswers.size() > 0) {
+                for (int j = 0; j < currentQuestion.getAnswers().size(); j++)
+                    writer.write(j + ". " + currentQuestion.getAnswers().get(j).getTitle());
 
-            int userAnswer = reader.readNum();
-            answers.add(currentQuestion.getAnswers().get(userAnswer).getTitle());
+                int userAnswer = reader.readNum();
+                answers.add(currentQuestion.getAnswers().get(userAnswer).getTitle());
+            } else {
+                String userAnswer = reader.readLine();
+                answers.add(userAnswer);
+            }
         }
 
         return answers;
