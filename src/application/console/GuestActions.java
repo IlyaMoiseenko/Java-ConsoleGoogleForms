@@ -1,3 +1,5 @@
+package application.console;
+
 import enums.SessionState;
 import interfaces.Reader;
 import interfaces.Writer;

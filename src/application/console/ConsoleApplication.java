@@ -1,3 +1,5 @@
+package application.console;
+
 import enums.Role;
 import enums.SessionState;
 import services.SessionService;
